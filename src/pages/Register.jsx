@@ -1,14 +1,32 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { AppContext } from "../context/AppContext";
+import axios from "axios";
 
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(name, email, password);
+  const { backendUrl, setIsLoggedIn, getUserData } = useContext(AppContext);
+
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      //  to send cookies credentiala
+      axios.defaults.withCredentials = true;
+      const { data } = await axios.post(backendUrl + "/api/auth/register", { name, email, password });
+      if (data.success) {
+        setIsLoggedIn(true);
+        getUserData();
+        navigate("/");
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
