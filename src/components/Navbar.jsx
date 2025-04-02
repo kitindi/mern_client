@@ -6,6 +6,7 @@ import axios from "axios";
 const Navbar = () => {
   const navigate = useNavigate();
   const { userData, backendUrl, setIsLoggedIn, setUserData } = useContext(AppContext);
+  console.log(userData);
 
   // send verification OTP
 
@@ -55,9 +56,9 @@ const Navbar = () => {
 
                     <div className="w-48 absolute top-8 z-10 right-0  p-1 bg-white hidden group-hover:block">
                       <ul className="text-gray-700 flex flex-col gap-2 p-2">
-                        {!userData.isAccountverified && (
+                        {!userData.isAccountVerified && (
                           <li onClick={sendEmailVerificationOtp} className="cursor-pointer p-1 hover:bg-gray-300">
-                            Verify Account
+                            Verify Email
                           </li>
                         )}
                         <li className="cursor-pointer p-1 hover:bg-gray-300" onClick={logout}>

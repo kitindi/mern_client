@@ -1,12 +1,12 @@
 import axios from "axios";
-import { useContext, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { AppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 
 const VerifyAccount = () => {
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;
-  const { backendUrl, getUserData } = useContext(AppContext);
+  const { backendUrl, getUserData, userData } = useContext(AppContext);
 
   const inputRef = useRef([]);
 
@@ -55,12 +55,18 @@ const VerifyAccount = () => {
         getUserData();
         navigate("/");
       } else {
-        console.log(data.message);
+        alert(data.message);
       }
     } catch (error) {
       console.log(error.message);
     }
   };
+
+  // navigate user to the home page if the account is verified
+
+  useEffect(() => {
+    userData && userData.isAccountVerified && navigate("/");
+  }, [userData]);
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center">
